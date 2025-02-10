@@ -1,0 +1,26 @@
+[build]
+  command = "npm run build && npm run functions:build"
+  publish = "dist"
+  functions = ".netlify/functions"
+
+[context.production]
+  command = "npm run build"
+
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["node-fetch"]
+
+[[redirects]]
+  from = "/api/cors-proxy"
+  to = "/.netlify/functions/cors-proxy"
+  status = 200
+  force = true
+  [redirects.headers]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Headers = "Content-Type, X-API-KEY, Accept"
+    Access-Control-Allow-Methods = "GET, POST, OPTIONS"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
